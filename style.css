@@ -1,0 +1,30 @@
+.state {
+    fill: #ddc;
+}
+.state:hover {
+    fill: darkgray;
+}
+.state.selected {
+    fill:#d7301f;
+}
+.county {
+    fill: #ddc;
+}
+.county:hover {
+    fill: darkgrey;
+}
+.county.selected {
+    fill:#d7301f;
+}
+.state-boundary {
+    fill: none;
+    stroke: #777;
+    stroke-linejoin: round;
+}
+.county-boundary {
+    fill: none;
+    stroke-width:.5;
+    stroke: #777;
+    stroke-linejoin: round;
+}
+
