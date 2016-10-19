@@ -9,11 +9,6 @@ var projection = d3.geo.albersUsa()
 var path = d3.geo.path()
     .projection(projection);
 
-var drag = d3.behavior.drag()
-    .origin(function(d) { return {x: d[0], y: d[1]}; })
-    .on("drag", dragged);
-
-
 d3.json("uscounties.json", function(error, us) {
     if (error) return console.error(error);
     console.log(us);
@@ -37,7 +32,8 @@ d3.json("uscounties.json", function(error, us) {
 
         stateMap.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
     }))
-    .call(drag)
+    .call(d3.behavior.drag())
+    .on("drag", dragged)
     .append("g");
     stateMap.selectAll(".state")
         .data(topojson.feature(us, us.objects.states).features)
