@@ -37,6 +37,7 @@ d3.json("uscounties.json", function(error, us) {
 
         stateMap.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
     }))
+    .call(drag)
     .append("g");
     stateMap.selectAll(".state")
         .data(topojson.feature(us, us.objects.states).features)
@@ -44,8 +45,7 @@ d3.json("uscounties.json", function(error, us) {
         .attr("class", function(d) { return "state " + d.id; })
         .attr("d", path)
         .on("click", stateSelect)
-        .call(drag);
-    
+
     stateMap.selectAll(".county")
         .data(topojson.feature(us, us.objects.counties).features)
         .enter().append("path")
@@ -53,7 +53,6 @@ d3.json("uscounties.json", function(error, us) {
         .attr("class", function(d) { return "county " + d.id; })
         .attr("d", path)
         .on("click", countySelect)
-        .call(drag);
     
     stateMap.append("path")
         .datum(topojson.mesh(us, us.objects.counties, function(a, b) { return a !== b;}))
