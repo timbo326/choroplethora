@@ -11,7 +11,6 @@ var path = d3.geo.path()
 
 d3.json("uscounties.json", function(error, us) {
     if (error) return console.error(error);
-    console.log(us);
     var stateMap = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -38,6 +37,7 @@ d3.json("uscounties.json", function(error, us) {
     stateMap.selectAll(".state")
         .data(topojson.feature(us, us.objects.states).features)
         .enter().append("path")
+        .attr("id", function(d) { return "state"+d.id; })
         .attr("class", function(d) { return "state " + d.id; })
         .attr("d", path)
         .on("click", stateSelect)
@@ -46,6 +46,7 @@ d3.json("uscounties.json", function(error, us) {
         .data(topojson.feature(us, us.objects.counties).features)
         .enter().append("path")
         .attr("visibility","hidden")
+        .attr("id", function(d) { return "county"+d.id; })
         .attr("class", function(d) { return "county " + d.id; })
         .attr("d", path)
         .on("click", countySelect)
