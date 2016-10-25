@@ -1,0 +1,62 @@
+
+.state {
+    fill: #ddc;
+}
+.state:hover {
+    stroke: black;
+    stroke-width: 2;
+}
+.county {
+    fill: #ddc;
+}
+.county:hover {
+    stroke: black;
+    stroke-width: 2;
+}
+.selected {
+    stroke: black;
+    stroke-width: 2;
+}
+.unselected {
+    opacity: .2;
+}
+.state-boundary {
+    fill: none;
+    stroke-width: .2;
+    stroke: black;
+    stroke-linejoin: "round";
+}
+.county-boundary {
+    fill: none;
+    stroke-width:.2;
+    stroke: black;
+    stroke-linejoin: "round";
+}
+html, body { 
+    margin:0; 
+    padding:0; 
+    overflow:hidden 
+}
+svg {
+     position:fixed; 
+     top:0; 
+     left:0; 
+     height:100%; 
+     width:75% 
+}
+ .control button {
+    left: 2em;
+    position: absolute;
+    top: 2em;
+}
+.q0 { fill:#f7fbff; }
+.q1 { fill:#deebf7; }
+.q2 { fill:#c6dbef; }
+.q3 { fill:#9ecae1; }
+.q4 { fill:#6baed6; }
+.q5 { fill:#4292c6; }
+.q6 { fill:#2171b5; }
+.q7 { fill:#08519c; }
+.q8 { fill:#08306b; }
+
+
