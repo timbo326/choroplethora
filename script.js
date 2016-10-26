@@ -1,78 +1,84 @@
-
-var selected = []; 
-var no_states=52;
-var no_counties=830;
-var states={}
-var counties={}
-var request = new XMLHttpRequest();
-
 // on click colors the state and adds non-duplicate IDs and names to respective arrays
 function stateSelect(d) {
-	console.log(d)
 	if (d3.event.defaultPrevented) return;//this line prevents selection if dragging took place
-	if(selected.includes(d.id)){
-		selected.splice(selected.indexOf(d.id),1)
-		d3.select(this).classed("selected", false)
-		d3.select(this).classed("unselected", true)
-		console.log(selected);
+	if(state_sel.includes(d.id)){
+		state_sel.splice(state_sel.indexOf(d.id),1)
+		console.log(state_sel);
 	}
     else{
-		d3.select(this).classed("unselected", false)
-	    d3.select(this).classed("selected", state = d);
-		selected.push(d.id)
-		console.log(selected);
-		var others = d3.selectAll(".state")
-		for (i=0; i<51; i++){		
-			if(!(selected.includes(Number(others[0][i].id.slice(5))))){
-				d3.select(others[0][i]).classed("unselected", true)
-			}
-		}
+    	state_sel.push(d.id)
+		console.log(state_sel);
 	}
+	color_states()
 }
 
 function countySelect(d) {
 	if (d3.event.defaultPrevented) return;
-    if(selected.includes(d.id)){
-		selected.splice(selected.indexOf(d.id),1)
-		d3.select(this).classed("selected", false)
-		d3.select(this).classed("unselected", true)
-		console.log(selected);
+    if(county_sel.includes(d.id)){
+		county_sel.splice(county_sel.indexOf(d.id),1)
+		console.log(county_sel);
 	}
     else{
-		d3.select(this).classed("unselected", false)
-	    d3.select(this).classed("selected", county = d);
-	    selected.push(d.id)
-	    console.log(selected); 
-		var others = d3.selectAll(".county")
-		for (i=0; i<830; i++){		
-			if(!(selected.includes(Number(others[0][i].id.slice(6))))){
-				d3.select(others[0][i]).classed("unselected", true)
-			}
+    	county_sel.push(d.id)
+    	console.log(county_sel);	
+	}
+	color_counties()
+}
+
+function color_states(){
+	d3.selectAll(".state").style("opacity",1).style("stroke-width",0.2)
+	if(state_sel.length>0){
+		d3.selectAll(".state").style("opacity",0.2).style("stroke-width",0.2)
+		for(i=0;i<state_sel.length;i++){
+			d3.select("#state"+state_sel[i]).style("opacity",1).style("stroke","black").style("stroke-width",2)
 		}
 	}
-}
-//Loading Data
-//Filling States
-request.open("GET", "https://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=state:*&key=", false);
-request.send();
-request=JSON.parse(request.response)
+	else{ 
+		d3.selectAll(".state").style("opacity",1).style("stroke",null).style("stroke-width",0.2)
+	}
+	d3.selectAll(".state")
+		.on("mouseover",function(){
+			var name=states[d3.select(this).attr("id").slice(5)].name
+			console.log(name)
+			d3.select(this).style("opacity",1).style("stroke","black").style("stroke-width",2);
+			tooltip.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            tooltip.html(name)	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+		})
+		.on("mouseout",function(){
+			tooltip.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+            color_states()
+		})
+	}
 
-for(i=1;i<=no_states;i++){
-	temp={"name":request[i][0],"counties":{}}
-	states[request[i][2]]=temp
+function color_counties(){
+	d3.selectAll(".state").style("opacity",1).style("stroke-width",0.2)
+	d3.selectAll(".county").style("opacity",1).style("stroke-width",0.2)
+	if(county_sel.length>0){
+		d3.selectAll(".state").style("opacity",0.2).style("stroke-width",0.2)
+		d3.selectAll(".county").style("opacity",0.2).style("stroke-width",0.2)
+		for(i=0;i<county_sel.length;i++){
+			d3.select("#county"+county_sel[i]).style("opacity",1).style("stroke","black").style("stroke-width",1)
+		}
+	}
+	else{ 
+		d3.selectAll(".county").style("opacity",1).style("stroke",null).style("stroke-width",0.2)
+	}
+	d3.selectAll(".county")
+		.on("mouseover",function(){d3.select(this).style("opacity",1).style("stroke","black").style("stroke-width",1)})
+		.on("mouseout",function(){color_counties()})
 }
 
-//Filling  Counties
-request = new XMLHttpRequest();
-request.open("GET", "https://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=county:*&key=", false);
-request.send();
-request=JSON.parse(request.response)
-for(i=1;i<=no_counties;i++){
-	states[request[i][2]]["counties"][request[i][2]+request[i][3]]=request[i][0]
-}
-console.log(states)
-
+console.log(states["01"])
 function work(){
+	d3.selectAll(".state").style("opacity",1).style("stroke",null).style("stroke-width",0.2)
+	d3.selectAll(".county").style("opacity",1).style("stroke",null).style("stroke-width",0.2)
+	county_sel=state_sel=[]
 	//trying to draw choropleth for state
 	request = new XMLHttpRequest();
 	request.open("GET", "https://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=state:*&key=", false);

@@ -11,7 +11,7 @@
 }
 .county:hover {
     stroke: black;
-    stroke-width: 2;
+    stroke-width: 1;
 }
 .selected {
     stroke: black;
@@ -49,6 +49,20 @@ svg {
     position: absolute;
     top: 2em;
 }
+
+div.tooltip {   
+    position: absolute;         
+    text-align: center;         
+    width: 60px;                    
+    height: 28px;                   
+    padding: 2px;               
+    font: 12px sans-serif;      
+    background: lightsteelblue; 
+    border: 0px;        
+    border-radius: 8px;         
+    pointer-events: none;           
+}
+
 .q0 { fill:#f7fbff; }
 .q1 { fill:#deebf7; }
 .q2 { fill:#c6dbef; }
@@ -58,5 +72,3 @@ svg {
 .q6 { fill:#2171b5; }
 .q7 { fill:#08519c; }
 .q8 { fill:#08306b; }
-
-
