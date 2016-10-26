@@ -34,6 +34,7 @@ function color_states(){
 		}
 	}
 	else{ 
+		console.log("works")
 		d3.selectAll(".state").style("opacity",1).style("stroke",null).style("stroke-width",0.2)
 	}
 	d3.selectAll(".state")
@@ -74,11 +75,12 @@ function color_counties(){
 		.on("mouseout",function(){color_counties()})
 }
 
-console.log(states["01"])
+
 function work(){
 	d3.selectAll(".state").style("opacity",1).style("stroke",null).style("stroke-width",0.2)
 	d3.selectAll(".county").style("opacity",1).style("stroke",null).style("stroke-width",0.2)
-	county_sel=state_sel=[]
+	county_sel=[]
+	state_sel=[]
 	//trying to draw choropleth for state
 	request = new XMLHttpRequest();
 	request.open("GET", "https://api.census.gov/data/2015/acs1?get=NAME,B01003_001E&for=state:*&key=", false);
@@ -94,10 +96,8 @@ function work(){
 		
 		if(minpop>temp)minpop=temp;
 	}
-	console.log("minimum population is:"+minpop)
-	console.log("maximum population is:"+maxpop)
+	
 	var range=maxpop-minpop
-
 	var linearScale = d3.scale.linear()
 		.domain([minpop,maxpop])
 		.range([0,8]);
@@ -112,8 +112,6 @@ function work(){
 	request.send();
 	request=JSON.parse(request.response)
 
-
-	console.log(request.length)
 	var maxpop=0
 	var minpop=5000000
 	for(i=1;i<=no_states;i++){
@@ -123,8 +121,6 @@ function work(){
 		
 		if(minpop>temp)minpop=temp;
 	}
-	console.log("minimum population is:"+minpop)
-	console.log("maximum population is:"+maxpop)
 	var range=maxpop-minpop
 
 	var linearScale = d3.scale.linear()
