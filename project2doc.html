@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>visualization Project 2 </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js" charset="utf-8"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" >
+  
+     <style>
+      p {
+    font-family: verdana;
+    font-size: 18px;
+    padding-left: 2cm;
+    padding-right: 2cm;
+}
+         h1{
+             padding-left: 2cm;
+             padding-bottom: 0.5cm;
+             padding-top: 1cm;
+         }
+    </style>
+</head>
+
+<body>
+    <div style="width:100%; height:100px; background-color:#636363;">
+        <span style="color:#ffffff; margin: 80px; line-height:100px; font-size:35px;">H590 Project Two</span>
+        <span style=" margin-right:40px; float:right; line-height:230px; font-size:20px;"><a href=index.html >Visualization</a></span>
+        <span style=" margin-right:40px; float:right; line-height:230px; font-size:20px;"><a href="" >Video</a></span>
+    </div>
+    <h1 style="text-align:justify">
+    Design Process and Design Thinking
+    </h1>
+    <p><strong>
+    Initial Design:
+   </strong> </p>
+<p>
+    We conducted a brainstorming session to kick off the project 2.  We mainly discussed the overall structure of the visualization after going through the data and project explanation. Figure 1 is a rough sketch which shows the basic idea of the visualization: A big choropleth map with level of state and county; when select states or counties, the dashboard aside displays many charts which reflect 13 variables; below the big choropleth map are small-multiples. Figure 2 is a more detailed sketch of our basic idea.  
+</p>
+   
+  <div style="width:830;  height:310px; ">
+          <img style="margin: 0 0 0 140px;" src="1.png" width="400" height="300"  />
+       <img style=" float:right; display:inline; margin-right:190px;margin-top:0px"  src="2.png" width="400" height="300" />
+     
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style="float: left; margin-left:210px">Picture 1</p>
+  <p style="float: right; margin-right:270px">Picture 2</p>
+ </div>
+    
+    <p>Considering to show 13 charts in one dashboard simultaneously will be so overwhelming, we analyzed the attribute of the variables and the relationship among the variables. We finally came up with a variable structure as figure 3 shows.
+</p>
+    
+    
+ <div style="width:830;  height:430px; ">
+           <img src="3.png" width="370" height="430" style="margin: 0 0 0 430px;">
+
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style=" margin-left:500px;margin-top:10px">Picture 3 </p>
+ 
+ </div>
+   <p>
+    With the structure above, we design a pop-out dashboard layer over the big choropleth map which can show five different groups of charts. In doing so, enough space is available for legible small charts.The big choropleth map can get enough space to show counties level as well. Following (figure 4 - figure 9) is the visualization of our revised design including the big choropleth and detailed charts. Figure 4 shows the main page of the visualization. The button “show detail” controls the dashboard. Figure 5 to Figure 9 are the dashboard which displays the detailed charts. The bar on the top of the dashboard shows five groups: Total population within the locality, Median age by sex, Median household income & Per capita income, Income to poverty-level ratio, and Travel time to work. Under each option, two or three variables are visualized with appropriate charts. Charts groups can be switched by clicking the options on the top bar. The charts outside the dashboard represent the condition when two or more states/counties are selected (These charts don’t exact exist in the visualization ). In other word, if two or more locations are selected, the chart types are replaced by the chart types outside the dashboard.</p>
+    
+    <div style="width:830;  height:410px; ">
+           <img src="4.png" width="500" height="400" style="margin: 10px 0 0 370px;">
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style=" margin-left:500px;margin-top:0px">Picture 4 </p>
+ 
+   <div style="width:830;  height:410px; ">
+           <img src="5.png" width="700" height="400" style="margin: 30px 0 0 250px;">
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style=" margin-left:500px;margin-top:0px">Picture 5 </p>
+        
+    <div style="width:830;  height:360px; ">
+           <img src="6.png" width="700" height="350" style="margin: 30px 0 0 250px;">
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style=" margin-left:500px;margin-top:0px">Picture 6 </p>
+        
+    <div style="width:830;  height:360px; ">
+           <img src="7.png" width="700" height="350" style="margin: 30px 0 0 250px;">
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style=" margin-left:500px;margin-top:0px">Picture 7 </p>
+        
+   <div style="width:830;  height:360px; ">
+           <img src="8.png" width="750" height="350" style="margin: 30px 0 0 250px;">
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style=" margin-left:500px;margin-top:0px">Picture 8 </p>
+        
+    <div style="width:830;  height:340px; ">
+           <img src="9.png" width="800" height="330" style="margin: 30px 0 0 230px;">
+    </div>
+    <div style="width:830;  height:50px; ">
+  <p style=" margin-left:500px;margin-top:0px">Picture 9 </p>
+    
+        
+        
+  
+   <p><strong>
+    Final Design:
+   </strong> </p>
+        
+        
+        
+    <p><strong>
+    Exploration of the visualization:
+   </strong> </p>
+   
+
+    <P style="margin-top:50px;font-family: verdana;
+    font-size: 30px;
+    "align="center">
+        <strong> Thank You!</strong></P>
+</body>
+
+
+</html>
