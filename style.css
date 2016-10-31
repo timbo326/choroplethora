@@ -1,30 +1,91 @@
+
+header {
+    padding: 1em;
+    color: white;
+    font: georgia;
+    background-color: #081d58;
+    clear: left;
+    text-align: center;
+}
 .state {
-    fill: #ddc;
+    fill: #969696;
+    stroke: black;
+    stroke-width: 1;
 }
 .state:hover {
-    fill: darkgrey;
-}
-.state.selected {
-    fill: #d7301f;
+    stroke: black;
+    stroke-width: 2;
 }
 .county {
-    fill: #ddc;
+    fill: #969696;
 }
 .county:hover {
-    fill: darkgrey;
+    stroke: black;
+    stroke-width: 1;
 }
-.county.selected {
-    fill:#d7301f;
+.selected {
+    stroke: black;
+    stroke-width: 2;
+}
+.unselected {
+    opacity: .2;
 }
 .state-boundary {
     fill: none;
-    stroke: #777;
+    stroke-width: .2;
+    stroke: black;
     stroke-linejoin: "round";
 }
 .county-boundary {
     fill: none;
-    stroke-width:.5;
-    stroke: #777;
+    stroke-width:.2;
+    stroke: black;
     stroke-linejoin: "round";
+}
+html, body { 
+    margin:0; 
+    padding:0; 
+    overflow:hidden 
+}
+svg {
+     left:0; 
+     height:100%; 
+     width:100% 
+}
+.control {
+    left: 2em;
+    position: absolute;
+    top: 8em;
+}
+.control select {
+    display: block;
+    font: 16px georgia;
+    padding: 2px;
+    margin: 2px;
+    border-width: 1px;
+    border-color: black;
+}
+
+div.tooltip {   
+    position: absolute;         
+    text-align: center;                            
+    padding: 5px;               
+    font: 18px georgia;      
+    background: white;       
+    border-radius: 1px;         
+    pointer-events: none;
+    opacity: 0;
+    border:solid black 1px;
+}
+label {
+    display: block;
+    font: 20px georgia;
+    font-style: bold;
+    background-color: white;
+    opacity: .8;
+}
+
+#controls {
+    padding-top: 10px;
 }
 
