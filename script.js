@@ -133,6 +133,18 @@ function color_states(){
 			if (indicator === "B19301_001E"){
 				tooltip.html(name + "<br/> Per Capita Income: $" +numberWithCommas(sindicators[indicator][d3.select(this).attr("id").slice(5)]))
 			}
+			if (indicator === "B08303_005E"){
+				tooltip.html(name + ": " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Workers 16 years and over who did not work at home")
+			}
+			if (indicator === "B08303_010E"){
+				tooltip.html(name + ": " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Workers 16 years and over who did not work at home")
+			}
+			if (indicator === "B17002_004E"){
+				tooltip.html(name + "<br/> Poverty Rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 1.00 or below")
+			}
+			if (indicator === "B17002_002E"){
+				tooltip.html(name + "<br/> Severe Poverty Rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 0.50 or below")
+			}
 		})
 		 .on("mousemove", function () {
         tooltip
@@ -193,9 +205,21 @@ function color_counties(){
 						if (indicator === "B19301_001E"){
 							tooltip.html(name + "<br/> Per Capita Income: $" +numberWithCommas(cindicators[indicator][d.id]))
 						}
+						if (indicator === "B08303_005E"){
+							tooltip.html(name + ": " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Workers 16 years and over who did not work at home")
+						}
+						if (indicator === "B08303_010E"){
+							tooltip.html(name + ": " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Workers 16 years and over who did not work at home")
+						}
+						if (indicator === "B17002_004E"){
+							tooltip.html(name + "<br/> Poverty Rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 1.00 or below")
+						}
+						if (indicator === "B17002_002E"){
+							tooltip.html(name + "<br/> Severe Poverty Rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 0.50 or below")
+						}
+					}
 				}
-			}
-					})
+			})
 		.on("mousemove", function () {
 			tooltip
 				.style("top", (d3.event.pageY + 16) + "px")
@@ -230,7 +254,7 @@ function work(){
 	var smin=5000000;
 	for(i=0;i<=no_states;i++){
 		
-		var temp= parseInt(sindicators[x][stateidlist[i]]);
+		var temp= sindicators[x][stateidlist[i]];
 
 		if(smax<temp)smax=temp;
 		
@@ -260,6 +284,18 @@ function work(){
 	if (x === "B19301_001E"){
 		colorScale = ["#ffffe5", "#004529"];
 	}
+	if (x === "B08303_005E"){
+		colorScale = ["#f7fcfd", "#4d004b"];
+	}
+	if (x === "B08303_010E"){
+		colorScale = ["#fff5f0", "#67000d"];
+	}
+	if (x === "B17002_004E"){
+		colorScale = ["#ffffcc", "#800026"];
+	}
+	if (x === "B17002_002E"){
+		colorScale = ["#f7fcf0", "#084081"];
+	}
 
 	
 	var linearScale = d3.scale.linear()
@@ -276,7 +312,7 @@ function work(){
 
 	for(i=1;i<=no_counties;i++){
 
-		var temp=parseInt(cindicators[x][countyidlist[i]]);
+		var temp= cindicators[x][countyidlist[i]];
 		if(cmax<temp)cmax=temp;
 		
 		if(cmin>temp)cmin=temp;
@@ -295,7 +331,7 @@ function work(){
 	}
 	}     
 }
-
+//Code for legend, this needs a lot of work...
 /*function stateLegend(){
 
 	var x = document.getElementById("choropleth").value;
