@@ -145,6 +145,13 @@ function color_states(){
 			if (indicator === "B17002_002E"){
 				tooltip.html(name + "<br/> Severe Poverty Rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 0.50 or below")
 			}
+        
+            if (indicator === "B06009_030E"){
+				tooltip.html(name + "<br/> Foreign Born bachelor or higher degree rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population of Foreign Born with a bachelor or higher degree")
+			}
+        if (indicator === "B06009_024E"){
+				tooltip.html(name + "<br/> Native bachelor or higher degree rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population of Native with a bachelor or higher degree")
+			}
 		})
 		 .on("mousemove", function () {
         tooltip
@@ -216,6 +223,12 @@ function color_counties(){
 						}
 						if (indicator === "B17002_002E"){
 							tooltip.html(name + "<br/> Severe Poverty Rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 0.50 or below")
+						}
+                        if (indicator === "B06009_030E"){
+							tooltip.html(name + "<br/> Foreign Born bachelor or higher degree rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population of Foreign Born with a bachelor or higher degree")
+						}
+                    if (indicator === "B06009_024E"){
+							tooltip.html(name + "<br/> Native bachelor or higher degree rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population of Native with a bachelor or higher degree")
 						}
 					}
 				}
@@ -295,6 +308,12 @@ function work(){
 	}
 	if (x === "B17002_002E"){
 		colorScale = ["#f7fcf0", "#084081"];
+	}
+        if (x === "B06009_030E"){
+		colorScale = ["#fff7ec", "#7f0000"];
+	}
+        if (x === "B06009_024E"){
+		colorScale = ["#fff7fb", "#014636"];
 	}
 
 	
