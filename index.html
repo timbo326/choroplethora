@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Project 2</title>
+	<title>2015 ACS Data</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body> 
+<body>
+	<header>
+		<center><h1>Explore the demographic and socio-economic characteristics of the 2015 US population:</h1></center>
+	</header>
 	<div id = "map">
+	</div>
+	<div class = "control">
+		<label for="choropleth">Indicator to visualize:</label>
+		<select name = "choropleth" id="choropleth" onchange="work()">
+			<option value="null">
+			<option value="B01003_001E">Total population
+			<option value="B01002_001E">Median Age
+			<option value="B01002_002E">Median Age - Male
+			<option value="B01002_003E">Median Age - Female
+			<option value="B19013_001E">Median Household Income
+			<option value="B19301_001E">Per Capita Income
+			<option value="B08303_005E">Population with Less than 20 Minute Travel Time to Work
+			<option value="B08303_010E">Population with 40 Minute or More Travel Time to Work
+			<option value="B17002_004E">Population in Poverty
+			<option value="B17002_002E">Population in Severe Poverty
+			<option value="B06009_030E">Population of Foreign Born with bachelor or higher degree
+          	        <option value="B06009_024E">Population of Native with bachelor or higher degree
+		</select>
 	</div>
 	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="https://d3js.org/topojson.v1.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js" charset="utf-8"></script>
 	<script src="script.js" charset="utf-8"></script>
 	<script src="usmap.js" charset="utf-8"></script>
-	<link rel="stylesheet" type="text/css" href="style.css">
 </body> 
 </html>
