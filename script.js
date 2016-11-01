@@ -5,7 +5,9 @@ var sfile = "data/statedata.csv",
 	indicatorsList = [],
 	sindicators = {},
 	cindicators = {},
+	indicators = {},
 	states = {},
+	counties = {},
 	stateNames = ['Alabama', 'Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Florida','Georgia','Hawaii','Idaho','llinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
 
 Papa.parse(sfile, {
@@ -32,7 +34,17 @@ Papa.parse(sfile, {
 				sindicator[stateid] = value;
 			}		
 		}
-	console.log(sindicators)
+		 for(var i= 1; i < results.meta['fields'].length; i++){
+            stateidlist.push(results.meta['fields'][i])
+            indicators[results.meta['fields'][i]]={}
+        }
+
+        for(row = 0; row < results.data.length; row++){
+            var record = results.data[row];
+            for(j=0;j<51;j++){
+                indicators[stateidlist[j]][record.id]=record[stateidlist[j]]
+            }
+        }
 	}
 });
 
@@ -44,6 +56,8 @@ Papa.parse(cfile, {
 	complete: function(results){
 		for(var i= 1; i < results.meta['fields'].length; i++){
 			countyidlist.push(results.meta['fields'][i]);
+			temp={"name":countyNames[i-1]}
+    		counties[results.meta['fields'][i]]=temp;
 		}
 		for(var row = 0; row < results.data.length; row++){
 			var record = results.data[row];
@@ -57,7 +71,6 @@ Papa.parse(cfile, {
 				cindicator[countyid] = value;
 			}		
 		}
-	console.log(cindicators)
 	}
 });
 
@@ -145,11 +158,10 @@ function color_states(){
 			if (indicator === "B17002_002E"){
 				tooltip.html(name + "<br/> Severe Poverty Rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 0.50 or below")
 			}
-        
-                        if (indicator === "B06009_030E"){
+          	        if (indicator === "B06009_030E"){
 				tooltip.html(name + "<br/> Foreign Born bachelor or higher degree rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population of Foreign Born with a bachelor or higher degree")
 			}
-                        if (indicator === "B06009_024E"){
+        		if (indicator === "B06009_024E"){
 				tooltip.html(name + "<br/> Native bachelor or higher degree rate: " + Number(Math.round((sindicators[indicator][d3.select(this).attr("id").slice(5)]*100) +'e2')+'e-2') + "% <br/> *Population of Native with a bachelor or higher degree")
 			}
 		})
@@ -186,7 +198,7 @@ function color_counties(){
                 if (countyidlist[i] == d.id) {
                     d3.select("#county"+ d.id)
 						var indicator = document.getElementById("choropleth").value;
-						var name= "County: " + d.id;
+						var name= counties[d.id].name;
 						d3.select(this).style("opacity",1).style("stroke","black").style("stroke-width",1);
 						tooltip.transition()		
 							.duration(200)		
@@ -224,10 +236,10 @@ function color_counties(){
 						if (indicator === "B17002_002E"){
 							tooltip.html(name + "<br/> Severe Poverty Rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population with an income to poverty ratio of 0.50 or below")
 						}
-                                                if (indicator === "B06009_030E"){
+                      				if (indicator === "B06009_030E"){
 							tooltip.html(name + "<br/> Foreign Born bachelor or higher degree rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population of Foreign Born with a bachelor or higher degree")
 						}
-                      				if (indicator === "B06009_024E"){
+                 				if (indicator === "B06009_024E"){
 							tooltip.html(name + "<br/> Native bachelor or higher degree rate: " + Number(Math.round((cindicators[indicator][d.id]*100) +'e2')+'e-2') + "% <br/> *Population of Native with a bachelor or higher degree")
 						}
 					}
@@ -312,7 +324,7 @@ function work(){
         if (x === "B06009_030E"){
 		colorScale = ["#fff7f3", "#49006a"];
 	}
-        if (x === "B06009_024E"){
+       if (x === "B06009_024E"){
 		colorScale = ["#f7fcfd", "#00441b"];
 	}
 
@@ -350,36 +362,236 @@ function work(){
 	}
 	}     
 }
-//Code for legend, this needs a lot of work...
-/*function stateLegend(){
+
+function multiples(){
 
 	var x = document.getElementById("choropleth").value;
 
-	if(x === "null") return;
+	var queue = d3_queue.queue();
+	var width = 210,
+		height = 125;
 
+	var projection = d3.geo.albersUsa()
+	.scale(250)
+	.translate([width/2, height/2]);
+	
+	var path = d3.geo.path()
+	.projection(projection);
+
+	var table = d3.select(".table").append("table");
+
+	var data=[]
+	var type=["< 100%", "100-149%", "=> 150%"]
+
+	///////////////////////////////////IMPORTANT///////////////////////////////////////////////////////////////////////////
+	///USE this section to push values inside a variable called 'data'........
+
+	//when done, use the last line in this section to print the JSON string in the console
+
+	for(j=0;j<51;j++){
+	var k=0;
+	var dataset="B01001_00"
+		for(i=3;i<25;i++){
+			var datas={}
+			if(i>9){dataset="B01001_0"}
+			
+			if(i==8 || i==9 || i==13 || i==15 || i==17 || i>18){
+			data[data.length-1].population+=indicators[stateidlist[j]][dataset+i+"E"]
+			continue
+			}
+
+			datas["population"]=indicators[stateidlist[j]][dataset+i+"E"]
+			datas["Place of Birth"]="In State"
+			datas["type"]=type[k]
+			k++
+			if(k==3)k=0
+			
+			datas["fips"]=stateidlist[j]
+			data.push(datas)
+		}
+
+	}
+
+	for(j=0;j<51;j++){
+		var k=0;
+		var dataset="B01001_0"
+		for(i=27;i<49;i++){
+			var datas={}    
+			if(i==32 || i==33 || i==37 || i==39 || i==41 || i>42){
+			data[data.length-1].population+=indicators[stateidlist[j]][dataset+i+"E"]
+			continue
+			}
+
+			datas["population"]=indicators[stateidlist[j]][dataset+i+"E"]
+			datas["Place of Birth"]="Other State"
+			datas["type"]=type[k]
+			k++
+			if(k==3)k=0
+			
+			datas["fips"]=stateidlist[j]
+			data.push(datas)
+		}
+
+	}
+	for(j=0;j<51;j++){
+		var k=0;
+		var dataset="B01001_0"
+		for(i=27;i<49;i++){
+			var datas={}    
+			if(i==32 || i==33 || i==37 || i==39 || i==41 || i>42){
+			data[data.length-1].population+=indicators[stateidlist[j]][dataset+i+"E"]
+			continue
+			}
+
+			datas["population"]=indicators[stateidlist[j]][dataset+i+"E"]
+			datas["Place of Birth"]="Native, Born Outside US"
+			datas["type"]=type[k]
+			k++
+			if(k==3)k=0
+			
+			datas["fips"]=stateidlist[j]
+			data.push(datas)
+		}
+
+	}
+	for(j=0;j<51;j++){
+		var k=0;
+		var dataset="B01001_0"
+		for(i=27;i<49;i++){
+			var datas={}    
+			if(i==32 || i==33 || i==37 || i==39 || i==41 || i>42){
+			data[data.length-1].population+=indicators[stateidlist[j]][dataset+i+"E"]
+			continue
+			}
+
+			datas["population"]=indicators[stateidlist[j]][dataset+i+"E"]
+			datas["Place of Birth"]="Foreign Born"
+			datas["type"]=type[k]
+			k++
+			if(k==3)k=0
+			
+			datas["fips"]=stateidlist[j]
+			data.push(datas)
+		}
+
+	}
+	console.log(JSON.stringify(data))////////////////////////////   TO PRINT JSON STRING IN CONSOLE
+
+
+
+	//After printing, copy the string from the console and create a new file called 'data.json' and paste the contents which were copied
+
+	//After doing so, comment this section. There is no use for it. The next line of code retrieves from the json file
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	if(x === "B01003_001E"){
+		queue
+		.defer(d3.json, "uscounties.json")
+		.defer(d3.json,"totalpop.json")
+		.await(ready);
+
+		function ready(error, us, data) {
+		if (error) throw error;
+		
+		var nested = d3.nest()
+			.key(function(d) { return d.gender; })
+			.key(function(d) { return d.type; })
+			.rollup(function(d) { return d3.map(d, function(d) { return d.fips; })})
+			.entries(data);
+		console.log(us.objects)
+		var states = topojson.feature(us, us.objects.states);
+		
+		states.features
+			.forEach(function(feature) {
+			feature.properties.centroid = path.centroid(feature);
+			});
+		
+		table.append("thead").selectAll("th")
+			.data(["","Under 5","5-9","10-14","15-17","18-21","22-24","25-29","30-40","40-50","50-60","60+"])
+			.enter().append("th")
+			.text(function(d) { return d; });
+			
+		var tr = table.selectAll("tr")
+			.data(nested, function(d) { return d.key; })
+			.enter().append("tr");
+			
+		tr.append("td")
+			.attr("class", "row-header")
+			.text(function(d) { return d.key; });
+
+		var td = tr.selectAll(".map").data(function(d) { return d.values; })
+			.enter().append("td")
+			.attr("class", "map");
+		
+		var canvases = td.append("canvas")
+			.attr("width", width)
+			.attr("height", height)
+			.each(render);
+
+		var colorScale = d3.scale.threshold()
+					.domain([200000, 400000, 600000, 800000, 1000000, 1200000])
+					.range(["#fef0d9","#fdd49e","#fdbb84","#fc8d59","#e34a33","#b30000"]);
+
+		d3.select(".loading-text").remove();
+		
+			function render(d) {
+				var data = d.values;
+				
+				var context = d3.select(this).node().getContext("2d");
+				
+				var color = function(d) {
+				if (data.has(d.id)) {
+					var value = data.get(d.id).population;
+					return value ? colorScale(value) : "#fff";
+				}
+				return "#fff";
+				};
+
+				// Want the maps to render sequentially. Use setTimeout to give the
+				// browser a break in between drawing each map.
+				window.setTimeout(function() {      
+				drawMap(context, color);
+				}, 500);
+			}
+
+			function drawMap(context, color) {
+				path.context(context);
+				context.strokeStyle = "#fff";
+				context.lineWidth = 0.1;
+				states.features.forEach(function(d) {
+				context.beginPath()
+				path(d);
+				context.fillStyle = color(d);
+				context.fill();
+				context.stroke();
+				});
+			}
+		}
+	}
+}
+
+//Code for legend, this needs a lot of work...
+/*function stateLegend(){
+	var x = document.getElementById("choropleth").value;
+	if(x === "null") return;
 	var smax=0;
 	var smin=5000000;
 	for(i=0;i<=no_states;i++){
 		
 		var temp= parseInt(sindicators[x][stateidlist[i]]);
-
 		if(smax<temp)smax=temp;
 		
 		if(smin>temp)smin=temp;
 	}
 	var range=smax-smin;
-
 	var linearScale = d3.scale.linear()
 		.domain([smin,smax])
 		.range(["#fff7fb", "#023858"]);
-
 	var w = 140, h = 400;
-
 	var key = d3.select("#legend")
 		.append("svg")
 		.attr("width", w)
 		.attr("height", h);
-
 	var legend = key
 		.append("defs")
 		.append("svg:linearGradient")
@@ -389,33 +601,27 @@ function work(){
 		.attr("x2", "100%")
 		.attr("y2", "100%")
 		.attr("spreadMethod", "pad");
-
 	legend
 		.append("stop")
 		.attr("offset", "0%")
 		.attr("stop-color", "#023858")
 		.attr("stop-opacity", 1);
-
 	legend
 		.append("stop")
 		.attr("offset", "100%")
 		.attr("stop-color", "#fff7fb")
 		.attr("stop-opacity", 1);
-
 	key.append("rect")
 		.attr("width", 40)
 		.attr("height", 300)
 		.style("fill", "url(#gradient)")
 		.attr("transform", "translate(0,10)");
-
 	var y = d3.scale.linear()
 		.range([300, 0])
 		.domain([1, 100]);
-
 	var yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("right");
-
 	key.append("g")
 		.attr("class", "y axis")
 		.attr("transform", "translate(41,10)")
@@ -424,29 +630,20 @@ function work(){
 		.attr("y", 30).attr("dy", ".71em")
 		.style("text-anchor", "end")
 		.text("axis title");
-
 	console.log("worked")
 }
-
 function countyLegend(){
-
 	var x = document.getElementById("choropleth").value;
-
 	if(x === "null") return;
-
 	var cmax=0;
 	var cmin=5000000;
-
 	for(i=1;i<=no_counties;i++){
-
 		var temp=parseInt(cindicators[x][countyidlist[i]]);
 		if(cmax<temp)cmax=temp;
 		
 		if(cmin>temp)cmin=temp;
 	}
-
 	var range=cmax-cmin;
-
 	var linearScale = d3.scale.linear()
 		.domain([cmin,cmax])
 		.range(["#fff7fb", "#023858"]);
@@ -454,9 +651,7 @@ function countyLegend(){
 	var key = d3.select("#stateMap")
 		.attr("width", w)
 		.attr("height", h);
-
 	var w = 140, h = 400;
-
 	var legend = key
 		.append("defs")
 		.append("svg:linearGradient")
@@ -466,33 +661,27 @@ function countyLegend(){
 		.attr("x2", "100%")
 		.attr("y2", "100%")
 		.attr("spreadMethod", "pad");
-
 	legend
 		.append("stop")
 		.attr("offset", "0%")
 		.attr("stop-color", "#023858")
 		.attr("stop-opacity", 1);
-
 	legend
 		.append("stop")
 		.attr("offset", "100%")
 		.attr("stop-color", "#fff7fb")
 		.attr("stop-opacity", 1);
-
 	key.append("rect")
 		.attr("width", 40)
 		.attr("height", 300)
 		.style("fill", "url(#gradient)")
 		.attr("transform", "translate(0,10)");
-
 	var y = d3.scale.linear()
 		.range([300, 0])
 		.domain([1, 100]);
-
 	var yAxis = d3.svg.axis()
 		.scale(y)
 		.orient("right");
-
 	key.append("g")
 		.attr("class", "y axis")
 		.attr("transform", "translate(41,10)")
@@ -501,6 +690,5 @@ function countyLegend(){
 		.attr("y", 30).attr("dy", ".71em")
 		.style("text-anchor", "end")
 		.text("axis title");
-
 	console.log("worked")
 }*/
